@@ -195,3 +195,17 @@ const revLib = getBook(2).reviews.librarything.rating;
 
 const revLibOpt = book.reviews?.librarything?.rating;
 // console.log(revLibOpt);
+
+const upperGenres = book.genres.map((genre) => genre.toUpperCase());
+// console.log(upperGenres);
+
+const adventureBooks = books.filter((book) =>
+  book.genres.includes("adventure")
+);
+// console.log(adventureBooks);
+
+const allPages = books.reduce((acc, book) => acc + book.pages, 0);
+// console.log(allPages);
+
+const sortedByPages = books.slice().sort((a, b) => a.pages - b.pages);
+// console.log(sortedByPages);
