@@ -142,3 +142,34 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
+
+const book = getBook(3);
+// console.log(book);
+const books = getBooks();
+// console.log(books);
+
+const [firstBook, secondBook] = books;
+// console.log(firstBook, secondBook);
+
+const { title, author } = book;
+// console.log(title, author);
+
+const [_, _1, ...otherBooks] = books;
+// console.log(otherBooks);
+
+const moreBooks = [...book.genres, "new"];
+// console.log(moreBooks);
+
+const biggerBook = { ...book, newAttr: "something" };
+// console.log(biggerBook);
+
+const modBook = { ...book, title: "My title" };
+// console.log(modBook);
+
+const template1 = `Book: ${book.title}, author: ${book.author}`;
+console.log(template1);
+
+const template2 = `Book: ${title} has ${
+  book.pages > 1500 ? "a lot of pages" : "few pages"
+}`;
+console.log(template2);
