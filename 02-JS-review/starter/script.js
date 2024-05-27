@@ -167,9 +167,31 @@ const modBook = { ...book, title: "My title" };
 // console.log(modBook);
 
 const template1 = `Book: ${book.title}, author: ${book.author}`;
-console.log(template1);
+// console.log(template1);
 
 const template2 = `Book: ${title} has ${
   book.pages > 1500 ? "a lot of pages" : "few pages"
 }`;
-console.log(template2);
+// console.log(template2);
+
+function getYear(date) {
+  return date.split("-")[0];
+}
+
+const gYear = (date) => date.split("-")[0];
+
+// console.log(getYear(book.publicationDate));
+// console.log(gYear(book.publicationDate));
+
+/*
+console.log(false && "some val");
+console.log(515 || "no data");
+console.log(0 || "no data");
+console.log(0 ?? "no data");
+*/
+
+const revLib = getBook(2).reviews.librarything.rating;
+// console.log(revLib);
+
+const revLibOpt = book.reviews?.librarything?.rating;
+// console.log(revLibOpt);
