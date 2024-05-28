@@ -209,3 +209,29 @@ const allPages = books.reduce((acc, book) => acc + book.pages, 0);
 
 const sortedByPages = books.slice().sort((a, b) => a.pages - b.pages);
 // console.log(sortedByPages);
+
+const newBook = {
+  id: 6,
+  title: "Hobbit",
+  author: "J. R. R. Tolkien",
+};
+
+const newArray = [...books, newBook];
+// console.log(newArray);
+
+const smallerArray = newArray.filter((book) => book.title !== "Hobbit");
+// console.log(smallerArray);
+
+const updatedArray = newArray.map((book) =>
+  book.id === 6 ? { ...book, pages: 2100 } : book
+);
+// console.log(updatedArray);
+
+/*
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0; // for ommiting SELF_SIGNED_CERT_IN_CHAIN problem for company network
+
+fetch("https://jsonplaceholder.typicode.com/todos/1")
+  .then((response) => response.json())
+  .then((data) => console.log(data));
+console.log("test");
+*/
