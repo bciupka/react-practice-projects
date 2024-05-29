@@ -11,7 +11,7 @@ function App() {
       />
       <div className="data">
         <Intro name="Black White" description="Lorem Ipsum" />
-        <SkillList />
+        <SkillList className="skill-list" />
       </div>
     </div>
   );
@@ -32,7 +32,7 @@ function Intro(props) {
 
 function Skill(props) {
   return (
-    <div backgroundColor={props.bgColor}>
+    <div style={{ backgroundColor: props.bgColor }}>
       <p>{props.skill}</p>
       <p>{props.emoji}</p>
     </div>
@@ -42,10 +42,10 @@ function Skill(props) {
 function SkillList() {
   return (
     <div>
-      <Skill skill="first-skill" emoji="💪" bgColor="red" />
-      <Skill skill="second-skill" emoji="💪" bgColor="blue" />
-      <Skill skill="third-skill" emoji="💪" bgColor="green" />
-      <Skill skill="fourth-skill" emoji="💪" bgColor="pink" />
+      <Skill className="skill" skill="first-skill" emoji="💪" bgColor="red" />
+      <Skill className="skill" skill="second-skill" emoji="💪" bgColor="blue" />
+      <Skill className="skill" skill="third-skill" emoji="💪" bgColor="green" />
+      <Skill className="skill" skill="fourth-skill" emoji="💪" bgColor="pink" />
     </div>
   );
 }
