@@ -80,11 +80,16 @@ function Menu() {
     <main className="menu">
       <h2>Menu</h2>
       {pizzasNum ? (
-        <ul className="pizzas">
-          {pizzaData.map((pizza) => (
-            <Pizza pizzaObj={pizza} />
-          ))}
-        </ul>
+        <>
+          <p>
+            Authentic Italian cuisine. All from our stove oven and delicious.
+          </p>
+          <ul className="pizzas">
+            {pizzaData.map((pizza) => (
+              <Pizza pizzaObj={pizza} />
+            ))}
+          </ul>
+        </>
       ) : (
         "We're still working on our menu, please come back later..."
       )}
