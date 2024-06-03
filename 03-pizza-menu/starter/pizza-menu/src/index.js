@@ -102,7 +102,19 @@ function Footer() {
 
   return (
     <footer className="footer">
-      {isOpen ? "We're open!" : "We're close."}
+      {isOpen ? (
+        <div className="order">
+          <p>
+            We're open till {closeHour}:00! You can oreder our pizzas online.
+            Click the button below.
+          </p>
+          <button className="btn">Order</button>
+        </div>
+      ) : (
+        <p>
+          We're close. Come back between {openHour}:00 and {closeHour}:00.
+        </p>
+      )}
     </footer>
   );
 }
@@ -114,7 +126,7 @@ function Pizza(props) {
       <div>
         <h3>{props.pizzaObj.name}</h3>
         <p>{props.pizzaObj.ingredients}</p>
-        <span>{props.pizzaObj.price}</span>
+        <span>{props.pizzaObj.price}$</span>
       </div>
     </li>
   );
