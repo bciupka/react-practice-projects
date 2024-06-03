@@ -74,21 +74,20 @@ function Header() {
 }
 
 function Menu() {
+  const pizzasNum = pizzaData.length;
+
   return (
     <main className="menu">
       <h2>Menu</h2>
-      <Pizza
-        name="Pizza Salamino"
-        photoName="/pizzas/salamino.jpg"
-        ingredients="Tomato, mozarella, and pepperoni"
-        price={15}
-      />
-      <Pizza
-        name="Pizza Prosciutto"
-        photoName="/pizzas/prosciutto.jpg"
-        ingredients="Tomato, mozarella, ham, aragula, and burrata cheese"
-        price={18}
-      />
+      {pizzasNum ? (
+        <ul className="pizzas">
+          {pizzaData.map((pizza) => (
+            <Pizza pizzaObj={pizza} />
+          ))}
+        </ul>
+      ) : (
+        "We're still working on our menu, please come back later..."
+      )}
     </main>
   );
 }
@@ -110,14 +109,14 @@ function Footer() {
 
 function Pizza(props) {
   return (
-    <div className="pizza">
-      <img src={props.photoName} alt={props.name} />
+    <li className="pizza">
+      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
       <div>
-        <h3>{props.name}</h3>
-        <p>{props.ingredients}</p>
-        <span>{props.price}</span>
+        <h3>{props.pizzaObj.name}</h3>
+        <p>{props.pizzaObj.ingredients}</p>
+        <span>{props.pizzaObj.price}</span>
       </div>
-    </div>
+    </li>
   );
 }
 
