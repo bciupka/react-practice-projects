@@ -1,6 +1,14 @@
 import { useState } from "react";
 
 function App() {
+  return (
+    <div className="App">
+      <Counter />
+    </div>
+  );
+}
+
+function Counter() {
   const [step, setStep] = useState(1);
   const [days, setDays] = useState(0);
   const [date, setDate] = useState(new Date());
@@ -30,7 +38,7 @@ function App() {
   }
 
   return (
-    <div className="container">
+    <>
       <div className="control">
         <button onClick={handleStepSubstract}>-</button>
         <span>Step: {step}</span>
@@ -46,7 +54,7 @@ function App() {
           ? `Today is ${date.toDateString()}`
           : `${days} days from today is ${date.toDateString()}`}
       </p>
-    </div>
+    </>
   );
 }
 

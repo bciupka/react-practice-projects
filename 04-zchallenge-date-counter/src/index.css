@@ -9,7 +9,7 @@ body {
   margin: 10px;
 }
 
-.container {
+.App {
   display: flex;
   flex-direction: column;
   align-items: center;
