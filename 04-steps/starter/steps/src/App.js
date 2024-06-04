@@ -1,4 +1,4 @@
-import React from "react"; // for autocomplete properties
+import { useState } from "react";
 
 const messages = [
   "Learn React ⚛️",
@@ -7,7 +7,15 @@ const messages = [
 ];
 
 export default function App() {
-  const step = 3;
+  const [step, setStep] = useState(1);
+
+  function handleNext() {
+    if (step < 3) setStep(step + 1);
+  }
+
+  function handlePrev() {
+    if (step > 1) setStep(step - 1);
+  }
 
   return (
     <div className="steps">
@@ -20,10 +28,16 @@ export default function App() {
         Step {step}: {messages[step - 1]}
       </p>
       <div className="buttons">
-        <button style={{ backgroundColor: "#7950f2", color: "#fff" }}>
+        <button
+          style={{ backgroundColor: "#7950f2", color: "#fff" }}
+          onClick={handlePrev}
+        >
           Prev
         </button>
-        <button style={{ backgroundColor: "#7950f2", color: "#fff" }}>
+        <button
+          style={{ backgroundColor: "#7950f2", color: "#fff" }}
+          onClick={handleNext}
+        >
           Next
         </button>
       </div>
