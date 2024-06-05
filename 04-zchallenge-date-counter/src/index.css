@@ -16,7 +16,8 @@ body {
   gap: 10px;
 }
 
-button {
+button,
+input {
   padding: 5px;
 }
 

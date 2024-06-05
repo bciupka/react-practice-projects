@@ -39,7 +39,7 @@ function Counter() {
         <span>{count === 0 ? "Today is" : `${count} days from today is`}</span>
         <span>{date.toDateString()}</span>
       </div>
-      {count !== 0 ? (
+      {count !== 0 || step !== 1 ? (
         <button
           onClick={() => {
             setStep(1);
