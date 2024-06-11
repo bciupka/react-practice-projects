@@ -37,9 +37,14 @@ function Sidebar() {
           <Friend friend={friend} key={friend.id} />
         ))}
       </ul>
-      <button className="button">Add friend</button>
+      {/* <Button>Add friend</Button> */}
+      <FormAddFriend />
     </div>
   );
+}
+
+function Button({ children }) {
+  return <button className="button">{children}</button>;
 }
 
 function Friend({ friend }) {
@@ -56,7 +61,19 @@ function Friend({ friend }) {
       ) : (
         <p>You and {friend.name} are even</p>
       )}
-      <button className="button">Select</button>
+      <Button>Select</Button>
     </li>
+  );
+}
+
+function FormAddFriend() {
+  return (
+    <form className="form-add-friend">
+      <label>👫 Friend name</label>
+      <input type="text" />
+      <label>🖼 Image URL</label>
+      <input type="text" />
+      <Button>Add</Button>
+    </form>
   );
 }
