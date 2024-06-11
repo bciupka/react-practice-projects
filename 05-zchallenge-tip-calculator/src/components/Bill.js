@@ -1,10 +1,11 @@
 export default function Bill({ value, setValue }) {
   return (
     <div>
-      <h4>How much was the bill?</h4>
+      <label>How much was the bill?</label>
       <input
         type="text"
         value={value}
+        placeholder="Bill value..."
         onChange={(e) => setValue(+e.target.value)}
       />
     </div>
