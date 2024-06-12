@@ -22,17 +22,21 @@ const initialFriends = [
 ];
 
 export default function App() {
-  const friends = initialFriends;
+  const [friends, setFriends] = useState(initialFriends);
+
+  function handleAddFriend(newFriend) {
+    setFriends((curFriends) => [...curFriends, newFriend]);
+  }
 
   return (
     <div className="app">
-      <Sidebar friends={friends} />
+      <Sidebar friends={friends} onAddFriend={handleAddFriend} />
       <FormSplitBill />
     </div>
   );
 }
 
-function Sidebar({ friends }) {
+function Sidebar({ friends, onAddFriend }) {
   const [showAddForm, setShowAddForm] = useState(false);
   function handleClickAddFriend() {
     setShowAddForm((cur) => !cur);
@@ -45,7 +49,7 @@ function Sidebar({ friends }) {
           <Friend friend={friend} key={friend.id} />
         ))}
       </ul>
-      {showAddForm && <FormAddFriend />}
+      {showAddForm && <FormAddFriend onAddFriend={onAddFriend} />}
       <Button onClick={handleClickAddFriend}>
         {showAddForm ? "Close" : "Add friend"}
       </Button>
@@ -80,13 +84,39 @@ function Friend({ friend }) {
   );
 }
 
-function FormAddFriend() {
+function FormAddFriend({ onAddFriend }) {
+  const [name, setName] = useState("");
+  const [image, setImage] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (name && image) {
+      const newFriend = {
+        name,
+        balance: 0,
+        image: `https://i.pravatar.cc/48?u=${image}`,
+        id: crypto.randomUUID(),
+      };
+      onAddFriend(newFriend);
+      setName("");
+      setImage("");
+    }
+  }
+
   return (
-    <form className="form-add-friend">
+    <form className="form-add-friend" onSubmit={handleSubmit}>
       <label>👫 Friend name</label>
-      <input type="text" />
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
       <label>🖼 Image URL</label>
-      <input type="text" />
+      <input
+        type="text"
+        value={image}
+        onChange={(e) => setImage(e.target.value)}
+      />
       <Button>Add</Button>
     </form>
   );
