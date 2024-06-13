@@ -23,16 +23,30 @@ const initialFriends = [
 
 export default function App() {
   const [friends, setFriends] = useState(initialFriends);
+  const [selectedFriend, setSelectedFriend] = useState(null);
+
+  function handleSelectFriend(friend) {
+    if (friend.id === selectedFriend) {
+      setSelectedFriend(null);
+    } else {
+      setSelectedFriend(friend.id);
+    }
+  }
 
   return (
     <div className="app">
-      <Sidebar friends={friends} onSetFriends={setFriends} />
-      <FormSplitBill />
+      <Sidebar
+        friends={friends}
+        onSetFriends={setFriends}
+        selectedFriend={selectedFriend}
+        onSelectFriend={handleSelectFriend}
+      />
+      {selectedFriend && <FormSplitBill />}
     </div>
   );
 }
 
-function Sidebar({ friends, onSetFriends }) {
+function Sidebar({ friends, onSetFriends, selectedFriend, onSelectFriend }) {
   function handleAddFriend(newFriend) {
     onSetFriends((curFriends) => [...curFriends, newFriend]);
     setShowAddForm((cur) => !cur);
@@ -47,7 +61,12 @@ function Sidebar({ friends, onSetFriends }) {
     <div className="sidebar">
       <ul>
         {friends.map((friend) => (
-          <Friend friend={friend} key={friend.id} />
+          <Friend
+            friend={friend}
+            selected={selectedFriend}
+            onSelectFriend={onSelectFriend}
+            key={friend.id}
+          />
         ))}
       </ul>
       {showAddForm && <FormAddFriend onAddFriend={handleAddFriend} />}
@@ -66,9 +85,9 @@ function Button({ children, onClick }) {
   );
 }
 
-function Friend({ friend }) {
+function Friend({ friend, selected, onSelectFriend }) {
   return (
-    <li>
+    <li className={selected === friend.id && "selected"}>
       <img src={friend.image} alt="friends portrait" />
       <h3>{friend.name}</h3>
       {friend.balance !== 0 ? (
@@ -80,7 +99,9 @@ function Friend({ friend }) {
       ) : (
         <p>You and {friend.name} are even</p>
       )}
-      <Button>Select</Button>
+      <Button onClick={() => onSelectFriend(friend)}>
+        {friend.id === selected ? "Close" : "Select"}
+      </Button>
     </li>
   );
 }
