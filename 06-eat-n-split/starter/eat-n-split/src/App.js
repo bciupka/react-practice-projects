@@ -24,19 +24,20 @@ const initialFriends = [
 export default function App() {
   const [friends, setFriends] = useState(initialFriends);
 
-  function handleAddFriend(newFriend) {
-    setFriends((curFriends) => [...curFriends, newFriend]);
-  }
-
   return (
     <div className="app">
-      <Sidebar friends={friends} onAddFriend={handleAddFriend} />
+      <Sidebar friends={friends} onSetFriends={setFriends} />
       <FormSplitBill />
     </div>
   );
 }
 
-function Sidebar({ friends, onAddFriend }) {
+function Sidebar({ friends, onSetFriends }) {
+  function handleAddFriend(newFriend) {
+    onSetFriends((curFriends) => [...curFriends, newFriend]);
+    setShowAddForm((cur) => !cur);
+  }
+
   const [showAddForm, setShowAddForm] = useState(false);
   function handleClickAddFriend() {
     setShowAddForm((cur) => !cur);
@@ -49,7 +50,7 @@ function Sidebar({ friends, onAddFriend }) {
           <Friend friend={friend} key={friend.id} />
         ))}
       </ul>
-      {showAddForm && <FormAddFriend onAddFriend={onAddFriend} />}
+      {showAddForm && <FormAddFriend onAddFriend={handleAddFriend} />}
       <Button onClick={handleClickAddFriend}>
         {showAddForm ? "Close" : "Add friend"}
       </Button>
