@@ -66,6 +66,7 @@ export default function App() {
         <FormSplitBill
           selectedFriend={selectedFriend}
           onUpdateBalance={handleUpdateBalance}
+          key={selectedFriend.id}
         />
       )}
     </div>
