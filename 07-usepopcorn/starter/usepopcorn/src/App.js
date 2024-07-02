@@ -55,14 +55,17 @@ const KEY = "f84fc31d";
 export default function App() {
   const [movies, setMovies] = useState([]);
   const [watched, setWatched] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(function () {
     async function fetchMovies() {
+      setIsLoading(true);
       const response = await fetch(
         `http://www.omdbapi.com/?apikey=${KEY}&s="matrix"`
       );
       const data = await response.json();
       setMovies(data.Search);
+      setIsLoading(false);
     }
     fetchMovies();
   }, []);
@@ -74,9 +77,7 @@ export default function App() {
         <FoundMoviesCount movies={movies} />
       </NavBar>
       <Main>
-        <Box>
-          <MoviesList movies={movies} />
-        </Box>
+        <Box>{isLoading ? <Loader /> : <MoviesList movies={movies} />}</Box>
         <Box>
           <WatchedSummary watched={watched} />
           <WatchedList watched={watched} />
@@ -166,6 +167,10 @@ function MoviesList({ movies }) {
       </li>
     );
   }
+}
+
+function Loader() {
+  return <p className="loader">Loading...</p>;
 }
 
 function WatchedSummary({ watched }) {
