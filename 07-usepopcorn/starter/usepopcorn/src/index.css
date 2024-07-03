@@ -69,6 +69,13 @@ body {
   justify-content: center;
 }
 
+.outer-radius-box {
+  /* height: 100%; */
+  display: flex;
+  overflow: hidden;
+  border-radius: 0.9rem;
+}
+
 .box {
   width: 42rem;
   max-width: 42rem;
