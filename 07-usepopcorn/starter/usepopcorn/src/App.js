@@ -58,6 +58,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [query, setQuery] = useState("");
+  const [selectedId, setSelectedId] = useState(null);
 
   useEffect(
     function () {
@@ -93,6 +94,14 @@ export default function App() {
     [query]
   );
 
+  function handleSelectMovie(movieId) {
+    setSelectedId((curId) => (curId === movieId ? null : movieId));
+  }
+
+  function handleCloseMovie() {
+    setSelectedId(null);
+  }
+
   return (
     <>
       <NavBar>
@@ -106,12 +115,21 @@ export default function App() {
           ) : errorMessage ? (
             <ErrorMessage message={errorMessage} />
           ) : (
-            <MoviesList movies={movies} />
+            <MoviesList movies={movies} onSelectMovie={handleSelectMovie} />
           )}
         </Box>
         <Box>
-          <WatchedSummary watched={watched} />
-          <WatchedList watched={watched} />
+          {selectedId ? (
+            <MovieDetails
+              movieId={selectedId}
+              onCloseSelected={handleCloseMovie}
+            />
+          ) : (
+            <>
+              <WatchedSummary watched={watched} />
+              <WatchedList watched={watched} />
+            </>
+          )}
         </Box>
       </Main>
     </>
@@ -173,18 +191,18 @@ function Box({ children }) {
   );
 }
 
-function MoviesList({ movies }) {
+function MoviesList({ movies, onSelectMovie }) {
   return (
     <ul className="list">
       {movies?.map((movie) => (
-        <Movie movie={movie} key={movie.imdbID} />
+        <Movie movie={movie} onSelectMovie={onSelectMovie} key={movie.imdbID} />
       ))}
     </ul>
   );
 
-  function Movie({ movie }) {
+  function Movie({ movie, onSelectMovie }) {
     return (
-      <li>
+      <li onClick={() => onSelectMovie(movie.imdbID)}>
         <img src={movie.Poster} alt={`${movie.Title} poster`} />
         <h3>{movie.Title}</h3>
         <div>
@@ -266,5 +284,16 @@ function WatchedMovie({ movie }) {
         </p>
       </div>
     </li>
+  );
+}
+
+function MovieDetails({ movieId, onCloseSelected }) {
+  return (
+    <div className="details">
+      <button className="btn-back" onClick={onCloseSelected}>
+        &larr;
+      </button>
+      {movieId}
+    </div>
   );
 }
