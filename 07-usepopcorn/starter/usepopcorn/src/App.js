@@ -134,6 +134,7 @@ export default function App() {
               movieId={selectedId}
               onCloseSelected={handleCloseMovie}
               onAddToWatched={handleAddToWatched}
+              watched={watched}
             />
           ) : (
             <>
@@ -303,11 +304,18 @@ function WatchedMovie({ movie }) {
   );
 }
 
-function MovieDetails({ movieId, onCloseSelected, onAddToWatched }) {
+function MovieDetails({ movieId, onCloseSelected, onAddToWatched, watched }) {
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [movie, setMovie] = useState({});
   const [userRating, setUserRating] = useState(0);
+
+  const isWatched = watched
+    .map((curMovie) => curMovie.imdbID)
+    .includes(movieId);
+  const watchedUserRating = watched.find(
+    (curMovie) => curMovie.imdbID === movieId
+  )?.userRating;
 
   useEffect(
     function () {
@@ -390,13 +398,23 @@ function MovieDetails({ movieId, onCloseSelected, onAddToWatched }) {
         </header>
         <section>
           <div className="rating">
-            <StarRating maxRating={10} size={24} onSetRating={setUserRating} />
+            {!isWatched ? (
+              <>
+                <StarRating
+                  maxRating={10}
+                  size={24}
+                  onSetRating={setUserRating}
+                />
+                {userRating > 0 && (
+                  <button className="btn-add" onClick={handleAdd}>
+                    + Add movie to watched list
+                  </button>
+                )}
+              </>
+            ) : (
+              <p>Your rating: {watchedUserRating} ⭐</p>
+            )}
           </div>
-          {userRating > 0 && (
-            <button className="btn-add" onClick={handleAdd}>
-              + Add movie to watched list
-            </button>
-          )}
           <p>
             <em>{plot}</em>
           </p>
