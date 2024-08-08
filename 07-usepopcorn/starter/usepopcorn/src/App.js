@@ -96,6 +96,8 @@ export default function App() {
         return;
       }
       fetchMovies();
+      handleCloseMovie();
+
       return function () {
         controller.abort();
       };
@@ -372,6 +374,22 @@ function MovieDetails({ movieId, onCloseSelected, onAddToWatched, watched }) {
     [movieId]
   );
 
+  useEffect(
+    function () {
+      function callback(e) {
+        if (e.code === "Escape") {
+          onCloseSelected();
+        }
+      }
+      document.addEventListener("keydown", callback);
+
+      return () => {
+        document.removeEventListener("keydown", callback);
+      };
+    },
+    [onCloseSelected]
+  );
+
   const {
     Title: title,
     Poster: poster,
@@ -441,7 +459,7 @@ function MovieDetails({ movieId, onCloseSelected, onAddToWatched, watched }) {
               <>
                 <StarRating
                   maxRating={10}
-                  size={24}
+                  size="24px"
                   onSetRating={setUserRating}
                 />
                 {userRating > 0 && (
