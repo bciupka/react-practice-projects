@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import StarRating from "./StarRating";
+import { useMovies } from "./useMovies";
 
 // const tempMovieData = [
 //   {
@@ -54,59 +55,15 @@ const average = (arr) =>
 const KEY = "f84fc31d";
 
 export default function App() {
-  const [movies, setMovies] = useState([]);
+  const [query, setQuery] = useState("");
   const [watched, setWatched] = useState(() => {
     const storedVal = localStorage.getItem("watched");
     return storedVal ? JSON.parse(storedVal) : [];
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [query, setQuery] = useState("");
+
   const [selectedId, setSelectedId] = useState(null);
 
-  useEffect(
-    function () {
-      const controller = new AbortController();
-
-      async function fetchMovies() {
-        try {
-          setErrorMessage("");
-          setIsLoading(true);
-          const response = await fetch(
-            `http://www.omdbapi.com/?apikey=${KEY}&s=${query}`,
-            { signal: controller.signal }
-          );
-          if (!response.ok) {
-            throw new Error("Could not fetch movies");
-          }
-          const data = await response.json();
-          if (data.Response === "False") {
-            throw new Error("No movies found");
-          }
-          setMovies(data.Search);
-        } catch (err) {
-          if (err.name !== "AbortError") {
-            setMovies([]);
-            setErrorMessage(err.message);
-          }
-        } finally {
-          setIsLoading(false);
-        }
-      }
-      if (query.length < 4) {
-        setMovies([]);
-        setErrorMessage("");
-        return;
-      }
-      fetchMovies();
-      handleCloseMovie();
-
-      return function () {
-        controller.abort();
-      };
-    },
-    [query]
-  );
+  const { isLoading, errorMessage, movies } = useMovies(query);
 
   function handleSelectMovie(movieId) {
     setSelectedId((curId) => (curId === movieId ? null : movieId));
