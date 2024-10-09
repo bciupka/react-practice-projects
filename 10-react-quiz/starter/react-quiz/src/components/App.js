@@ -12,6 +12,7 @@ const initialState = {
   status: "loading",
   index: 0,
   answer: null,
+  points: 0,
 };
 
 function reducer(state, action) {
@@ -33,7 +34,16 @@ function reducer(state, action) {
         status: "active",
       };
     case "newAnswer":
-      return { ...state, answer: action.payload };
+      const currentQuestion = state.questions[state.index];
+
+      return {
+        ...state,
+        answer: action.payload,
+        points:
+          currentQuestion.correctOption === action.payload
+            ? state.points + currentQuestion.points
+            : state.points,
+      };
     default:
       throw new Error("Unknown action");
   }
