@@ -1,9 +1,19 @@
+import { useSearchParams } from "react-router-dom";
 import styles from "./Map.module.css";
 
 function Map() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const lat = searchParams.get("lat");
+  const lng = searchParams.get("lng");
   return (
     <div className={styles.mapContainer}>
-      <p>123</p>
+      <h1>Map</h1>
+      <h1>
+        Lat: {lat}, Lng: {lng}
+      </h1>
+      <button onClick={() => setSearchParams({ lat: 23, lng: 24 })}>
+        Change pos
+      </button>
     </div>
   );
 }
