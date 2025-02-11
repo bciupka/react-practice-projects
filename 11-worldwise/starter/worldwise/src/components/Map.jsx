@@ -9,21 +9,20 @@ import {
 } from "react-leaflet";
 import { useCities } from "../contexts/CitiesContext";
 import { useState, useEffect } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useGeolocation } from "../hooks/useGeolocation";
 import Button from "./Button";
+import { useSearchPosition } from "../hooks/useSearchPosition";
 
 function Map() {
   const { cities } = useCities();
-  const [searchParams] = useSearchParams();
-  const mapLat = searchParams.get("lat");
-  const mapLng = searchParams.get("lng");
   const [mapPosition, setMapPosition] = useState([51.505, -0.09]);
   const {
     isLoading: isLoadingGeolocation,
     position: positionGeologation,
     getPosition,
   } = useGeolocation();
+  const [mapLat, mapLng] = useSearchPosition();
 
   useEffect(() => {
     if (mapLat && mapLng) {
@@ -56,7 +55,10 @@ function Map() {
         />
         {cities.map((city) => {
           return (
-            <Marker position={[city.position.lat, city.position.lng]}>
+            <Marker
+              position={[city.position.lat, city.position.lng]}
+              key={city.id}
+            >
               <Popup>
                 <span>{city.emoji}</span>
                 <span>{city.cityName}</span>

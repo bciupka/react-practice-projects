@@ -1,24 +1,65 @@
 // "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=0&longitude=0"
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import styles from "./Form.module.css";
 import Button from "./Button";
 import BackButton from "./BackButton";
+import { useSearchPosition } from "../hooks/useSearchPosition";
+import Spinnner from "./Spinner";
+import Message from "./Message";
 
-// export function convertToEmoji(countryCode) {
-//   const codePoints = countryCode
-//     .toUpperCase()
-//     .split("")
-//     .map((char) => 127397 + char.charCodeAt());
-//   return String.fromCodePoint(...codePoints);
-// }
+export function convertToEmoji(countryCode) {
+  const codePoints = countryCode
+    .toUpperCase()
+    .split("")
+    .map((char) => 127397 + char.charCodeAt());
+  return String.fromCodePoint(...codePoints);
+}
+
+const BASE_URL = "https://api.bigdatacloud.net/data/reverse-geocode-client";
 
 function Form() {
+  const [mapLat, mapLng] = useSearchPosition();
   const [cityName, setCityName] = useState("");
   const [country, setCountry] = useState("");
   const [date, setDate] = useState(new Date());
   const [notes, setNotes] = useState("");
+  const [geomappingLoading, setGeomappingLoading] = useState(false);
+  const [geomappingError, setGeomappingError] = useState("");
+  const [emoji, setEmoji] = useState("");
+
+  useEffect(() => {
+    async function getCityData() {
+      setGeomappingLoading(true);
+      setGeomappingError("");
+      try {
+        const response = await fetch(
+          `${BASE_URL}?latitude=${mapLat}&longitude=${mapLng}`
+        );
+        const data = await response.json();
+        if (!data.city && !data.country) {
+          throw new Error("City not found");
+        }
+        setCityName(data.city || data.locality);
+        setCountry(data.country);
+        setEmoji(convertToEmoji(data.countryCode));
+      } catch (err) {
+        setGeomappingError(err.message);
+      } finally {
+        setGeomappingLoading(false);
+      }
+    }
+    getCityData();
+  }, [mapLat, mapLng]);
+
+  if (geomappingLoading) {
+    return <Spinnner />;
+  }
+
+  if (geomappingError) {
+    return <Message message={geomappingError} />;
+  }
 
   return (
     <form className={styles.form}>
@@ -29,7 +70,7 @@ function Form() {
           onChange={(e) => setCityName(e.target.value)}
           value={cityName}
         />
-        {/* <span className={styles.flag}>{emoji}</span> */}
+        <span className={styles.flag}>{emoji}</span>
       </div>
 
       <div className={styles.row}>
