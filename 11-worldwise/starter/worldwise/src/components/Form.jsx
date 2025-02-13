@@ -8,6 +8,10 @@ import BackButton from "./BackButton";
 import { useSearchPosition } from "../hooks/useSearchPosition";
 import Spinnner from "./Spinner";
 import Message from "./Message";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { useCities } from "../contexts/CitiesContext";
+import { useNavigate } from "react-router-dom";
 
 export function convertToEmoji(countryCode) {
   const codePoints = countryCode
@@ -28,6 +32,8 @@ function Form() {
   const [geomappingLoading, setGeomappingLoading] = useState(false);
   const [geomappingError, setGeomappingError] = useState("");
   const [emoji, setEmoji] = useState("");
+  const { createNewCity, isLoading } = useCities();
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getCityData() {
@@ -53,16 +59,38 @@ function Form() {
     getCityData();
   }, [mapLat, mapLng]);
 
+  async function handleSubmit(e) {
+    e.preventDefault();
+    if (!cityName || !date) return;
+
+    const newCity = {
+      cityName,
+      country,
+      emoji,
+      date,
+      notes,
+      position: { lat: mapLat, lng: mapLng },
+    };
+    await createNewCity(newCity);
+    navigate("/app/cities");
+  }
+
   if (geomappingLoading) {
     return <Spinnner />;
   }
+
+  if (!mapLat && !mapLng)
+    return <Message message="To start click somewhere on the map" />;
 
   if (geomappingError) {
     return <Message message={geomappingError} />;
   }
 
   return (
-    <form className={styles.form}>
+    <form
+      className={`${styles.form} ${isLoading ? styles.loading : ""}`}
+      onSubmit={handleSubmit}
+    >
       <div className={styles.row}>
         <label htmlFor="cityName">City name</label>
         <input
@@ -75,10 +103,10 @@ function Form() {
 
       <div className={styles.row}>
         <label htmlFor="date">When did you go to {cityName}?</label>
-        <input
-          id="date"
-          onChange={(e) => setDate(e.target.value)}
-          value={date}
+        <DatePicker
+          onChange={(date) => setDate(date)}
+          selected={date}
+          dateFormat="dd/MM/yyyy"
         />
       </div>
 
