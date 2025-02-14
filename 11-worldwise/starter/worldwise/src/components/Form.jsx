@@ -47,7 +47,6 @@ function Form() {
         if (!data.city && !data.countryName) {
           throw new Error("City not found");
         }
-        console.log(data);
         setCityName(data.city || data.locality);
         setCountry(data.countryName);
         setEmoji(convertToEmoji(data.countryCode));
