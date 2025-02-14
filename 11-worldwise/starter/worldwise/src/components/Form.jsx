@@ -44,11 +44,12 @@ function Form() {
           `${BASE_URL}?latitude=${mapLat}&longitude=${mapLng}`
         );
         const data = await response.json();
-        if (!data.city && !data.country) {
+        if (!data.city && !data.countryName) {
           throw new Error("City not found");
         }
+        console.log(data);
         setCityName(data.city || data.locality);
-        setCountry(data.country);
+        setCountry(data.countryName);
         setEmoji(convertToEmoji(data.countryCode));
       } catch (err) {
         setGeomappingError(err.message);
