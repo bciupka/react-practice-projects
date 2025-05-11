@@ -59,6 +59,18 @@
         "lat": "46.5739667965278",
         "lng": "11.129150390625002"
       }
+    },
+    {
+      "id": "8e09",
+      "cityName": "Donovaly",
+      "country": "Slovakia",
+      "emoji": "🇸🇰",
+      "date": "2025-05-11T17:32:05.037Z",
+      "notes": "tutaj bylo fajnie z misia",
+      "position": {
+        "lat": "48.864714761802794",
+        "lng": "19.248046875000004"
+      }
     }
   ]
 }
