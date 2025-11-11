@@ -1,4 +1,5 @@
 import AddCabin from "../features/cabins/AddCabin";
+import CabinsTableOperations from "../features/cabins/CabinsTableOperations";
 import CabinTable from "../features/cabins/CabinTable";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
@@ -8,7 +9,7 @@ function Cabins() {
     <>
       <Row type="horizontal">
         <Heading as="h1">All cabins</Heading>
-        <p>TEST</p>
+        <CabinsTableOperations />
       </Row>
 
       <Row>
