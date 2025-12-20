@@ -18,7 +18,7 @@ function useRecentStays() {
     (stay) => stay.status === "checked-in" || stay.status === "checked-out"
   );
 
-  return { stays: data, confirmedStays, isLoading };
+  return { stays: data, confirmedStays, isLoading, numDays };
 }
 
 export default useRecentStays;
